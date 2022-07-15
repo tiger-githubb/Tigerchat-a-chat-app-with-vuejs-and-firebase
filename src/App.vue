@@ -11,7 +11,7 @@
   </div>
 
   <div class="view chat" v-else>
-    <h1>Chat view</h1>
+    <h1>page en construction</h1>
   </div>
 
 </template>
