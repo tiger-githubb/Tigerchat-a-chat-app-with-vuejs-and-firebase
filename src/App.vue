@@ -1,5 +1,5 @@
 <template>
-  <div class="view login" v-if="state.username === '' || state.username=== null">
+  <div class="view login" v-if="state.username === '' || state.username === null">
     <form class="login-form" autocomplete="on" @submit.prevent="Login">
       <div class="form-inner">
         <h1>bienvenue sur tigerchat</h1>
@@ -18,24 +18,27 @@
 
 <script>
 
-import { reactive,onMounted , ref } from 'vue' ;
+import { reactive, onMounted, ref } from 'vue';
 // import db from './db';
 
 export default {
   name: 'App',
   setup() {
-      //declaration de la variable inputUsername qui va permettre de stocker le nom d'utilisateur 
+    //declaration de la variable inputUsername qui va permettre de stocker le nom d'utilisateur 
     const inputUsername = ref("");
     //declaration de state qui permet de contenir toutes les données de l'application 
     const state = reactive({
       username: "",
     })
+    //fonction login avec argument "" c'est a dire l'utilisateur n'a pas encore saisi de données 
     const Login = () => {
-      if (inputUsername.value != "" || inputUsername.value != null ){
-          state.username = inputUsername.value;
-          inputUsername.value = "";
+      //S'il y a une entrée, elle définit la propriété value de state avec ce qui a été entré et efface sa propre propriété value de sorte qu'elles soient toutes deux définies comme nulles lorsqu'il n'y a pas d'entrée de l'utilisateur.
+      if (inputUsername.value != "" || inputUsername.value != null) {
+        state.username = inputUsername.value;
+        inputUsername.value = "";
       }
     }
+    //La dernière ligne renvoie un objet contenant deux propriétés : inputUsername et Login ainsi que leurs fonctions respectives (inputUsername() et Login()).
     return {
       inputUsername,
       Login,
