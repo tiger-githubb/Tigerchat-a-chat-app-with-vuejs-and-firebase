@@ -5,7 +5,7 @@
         <h1>bienvenue sur tigerchat</h1>
         <label for="username">Nom d'utilisateur</label>
         <input type="text" v-model="inputUsername" placeholder="saisir un nom d'utilisateur ... ">
-        <input type="submit" value="login" />
+        <input type="submit" value="S'inscrire" />
       </div>
     </form>
   </div>
