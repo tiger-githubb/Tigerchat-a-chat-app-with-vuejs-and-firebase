@@ -15,9 +15,11 @@
       <button class="logout" @click="logou">Se deconnecter </button>
       <h1>Bienvenue,{{ state.username }}</h1>
     </header>
-    <section class="chat-box">
-      <div v-for="message in state.messages" :key="message.key"
-        :class="(message.username ? 'message current-user' : 'message')">
+     <section class="chat-box">
+      <div 
+        v-for="message in state.messages" 
+        :key="message.key" 
+        :class="(message.username == state.username ? 'message current-user' : 'message')">
         <div class="message-inner">
           <div class="username">{{ message.username }}</div>
           <div class="content">{{ message.content }}</div>
@@ -40,7 +42,7 @@
 
 import { reactive, onMounted, ref } from 'vue';
 
-import app from './firebase';
+import firebase from './firebase';
 
 export default {
   name: 'App',
@@ -51,11 +53,12 @@ export default {
     //declaration de state qui permet de contenir toutes les données de l'application 
     const state = reactive({
       username: "",
+      messages: []
     })
     //fonction login avec argument "" c'est a dire l'utilisateur n'a pas encore saisi de données 
     const Login = () => {
       //S'il y a une entrée, elle définit la propriété value de state avec ce qui a été entré et efface sa propre propriété value de sorte qu'elles soient toutes deux définies comme nulles lorsqu'il n'y a pas d'entrée de l'utilisateur.
-      if (inputUsername.value != "" || inputUsername.value != null) {
+     if (inputUsername.value != "" || inputUsername.value != null) {
         state.username = inputUsername.value;
         inputUsername.value = "";
       }
@@ -64,14 +67,15 @@ export default {
     const logout = () => {
       state.username = "";
     }
+
+
     const SendMessage = () => {
-      const messagesRef = app.database().ref("messages");
-      console.log("Test2")
+      const messagesRef = firebase.database().ref("messages");
+
       if (inputMessage.value === "" || inputMessage.value === null) {
         return;
-
       }
-      console.log("Test2")
+
       const message = {
         username: state.username,
         content: inputMessage.value
@@ -79,15 +83,13 @@ export default {
 
       messagesRef.push(message);
       inputMessage.value = "";
-
     }
 
     onMounted(() => {
-      const messagesRef = app.database().ref("messages");
+      const messagesRef = firebase.database().ref("messages");
 
       messagesRef.on('value', snapshot => {
         const data = snapshot.val();
-        //let messages est un tableau pour stocker les messages temporairement
         let messages = [];
 
         Object.keys(data).forEach(key => {
@@ -97,6 +99,7 @@ export default {
             content: data[key].content
           });
         });
+
         state.messages = messages;
       });
     });
@@ -104,11 +107,11 @@ export default {
     //La dernière ligne renvoie un objet contenant deux propriétés : inputUsername et Login ainsi que leurs fonctions respectives (inputUsername() et Login()).
     return {
       inputUsername,
+      Login,
+      state,
       inputMessage,
       SendMessage,
-      Login,
-      logout,
-      state
+      logout
     }
   }
 }
