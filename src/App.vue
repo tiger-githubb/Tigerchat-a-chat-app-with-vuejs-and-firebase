@@ -15,10 +15,8 @@
       <button class="logout" @click="logou">Se deconnecter </button>
       <h1>Bienvenue,{{ state.username }}</h1>
     </header>
-     <section class="chat-box">
-      <div 
-        v-for="message in state.messages" 
-        :key="message.key" 
+    <section class="chat-box">
+      <div v-for="message in state.messages" :key="message.key"
         :class="(message.username == state.username ? 'message current-user' : 'message')">
         <div class="message-inner">
           <div class="username">{{ message.username }}</div>
@@ -58,40 +56,46 @@ export default {
     //fonction login avec argument "" c'est a dire l'utilisateur n'a pas encore saisi de données 
     const Login = () => {
       //S'il y a une entrée, elle définit la propriété value de state avec ce qui a été entré et efface sa propre propriété value de sorte qu'elles soient toutes deux définies comme nulles lorsqu'il n'y a pas d'entrée de l'utilisateur.
-     if (inputUsername.value != "" || inputUsername.value != null) {
+      if (inputUsername.value != "" || inputUsername.value != null) {
         state.username = inputUsername.value;
         inputUsername.value = "";
       }
     }
     //fonction deconnecion
     const logout = () => {
-      state.username = "";
+      state.username = "";  // Le code supprime le nom d'utilisateur de l'objet state.
     }
 
 
     const SendMessage = () => {
+      //obtenir la référence des messages à partir de firebase
       const messagesRef = firebase.database().ref("messages");
 
+      //vérifie s’il existe une valeur inputMessage et si elle n’est pas vide ou nulle.
       if (inputMessage.value === "" || inputMessage.value === null) {
         return;
       }
 
+      //S’il n’y en a pas, il revient; sinon, il crée un nouvel objet avec le nom d’utilisateur state.username et le contenu de inputMessage . 
       const message = {
         username: state.username,
         content: inputMessage.value
       }
-
+      //envoie du message sur la liste messagesRef en utilisant la méthode push() de la base de données Firebase
       messagesRef.push(message);
       inputMessage.value = "";
     }
 
+    //La fonction qui a été appelée sur mount() sera exécutée une fois le composant monté, c’est-à-dire le moment où il s’affiche.
     onMounted(() => {
+      //création d'une référence à la base de données « messages ».
       const messagesRef = firebase.database().ref("messages");
 
+      //écout des modifications apportées à la base de données des messages et met à jour un tableau d’objets avec les données de l’instantané.
       messagesRef.on('value', snapshot => {
         const data = snapshot.val();
         let messages = [];
-
+        //Lorsqu’il reçoit une modification, il crée un objet qui contient toutes ses paires clé-valeur et les pousse dans un tableau appelé état.
         Object.keys(data).forEach(key => {
           messages.push({
             id: key,
@@ -99,7 +103,7 @@ export default {
             content: data[key].content
           });
         });
-
+        //parcourir les données dans firebase et pousser un nouvel objet sur l’état.
         state.messages = messages;
       });
     });
