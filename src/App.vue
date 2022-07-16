@@ -11,7 +11,27 @@
   </div>
 
   <div class="view chat" v-else>
-    <h1>page en construction</h1>
+    <header>
+      <button class="logout" @click="logou">Se deconnecter </button>
+      <h1>Bienvenue,{{ state.username }}</h1>
+    </header>
+    <section class="chat-box">
+      <div v-for="message in state.messages" :key="message.key"
+        :class="(message.username ? 'message current-user' : 'message')">
+        <div class="message-inner">
+          <div class="username">{{ message.username }}</div>
+          <div class="content">{{ message.content }}</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <!-- submit.preveint permet de valider un formulaire sans pour autant actualiser la page -->
+      <form @submit.prevent="SendMessage">
+        <input type="text" v-model="inputMessage" placeholder="Saisir votre message" />
+        <input type="submit" value="Envoyer" />
+      </form>
+    </footer>
   </div>
 
 </template>
@@ -19,13 +39,15 @@
 <script>
 
 import { reactive, onMounted, ref } from 'vue';
-// import db from './db';
+
+import app from './firebase';
 
 export default {
   name: 'App',
   setup() {
     //declaration de la variable inputUsername qui va permettre de stocker le nom d'utilisateur 
     const inputUsername = ref("");
+    const inputMessage = ref("");
     //declaration de state qui permet de contenir toutes les données de l'application 
     const state = reactive({
       username: "",
@@ -38,10 +60,54 @@ export default {
         inputUsername.value = "";
       }
     }
+    //fonction deconnecion
+    const logout = () => {
+      state.username = "";
+    }
+    const SendMessage = () => {
+      const messagesRef = app.database().ref("messages");
+      console.log("Test2")
+      if (inputMessage.value === "" || inputMessage.value === null) {
+        return;
+
+      }
+      console.log("Test2")
+      const message = {
+        username: state.username,
+        content: inputMessage.value
+      }
+
+      messagesRef.push(message);
+      inputMessage.value = "";
+
+    }
+
+    onMounted(() => {
+      const messagesRef = app.database().ref("messages");
+
+      messagesRef.on('value', snapshot => {
+        const data = snapshot.val();
+        //let messages est un tableau pour stocker les messages temporairement
+        let messages = [];
+
+        Object.keys(data).forEach(key => {
+          messages.push({
+            id: key,
+            username: data[key].username,
+            content: data[key].content
+          });
+        });
+        state.messages = messages;
+      });
+    });
+
     //La dernière ligne renvoie un objet contenant deux propriétés : inputUsername et Login ainsi que leurs fonctions respectives (inputUsername() et Login()).
     return {
       inputUsername,
+      inputMessage,
+      SendMessage,
       Login,
+      logout,
       state
     }
   }
@@ -81,9 +147,11 @@ export default {
         box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 
         h1 {
-          color: #AAA;
-          font-size: 28px;
+          color: rgb(252, 220, 220);
+          font-size: 21px;
           margin-bottom: 30px;
+          display: flex;
+          justify-content: center;
         }
 
         label {
@@ -129,7 +197,7 @@ export default {
           display: block;
           width: 100%;
           padding: 10px 15px;
-          background-color: #ea526f;
+          background-color: #0d0f61;
           border-radius: 8px;
 
           color: #FFF;
