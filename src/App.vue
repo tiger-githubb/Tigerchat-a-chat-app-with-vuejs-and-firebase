@@ -12,7 +12,7 @@
 
   <div class="view chat" v-else>
     <header>
-      <button class="logout" @click="logou">Se deconnecter </button>
+      <button class="logout" @click="logout">Se deconnecter </button>
       <h1>Bienvenue,{{ state.username }}</h1>
     </header>
     <section class="chat-box">
@@ -29,7 +29,7 @@
       <!-- submit.preveint permet de valider un formulaire sans pour autant actualiser la page -->
       <form @submit.prevent="SendMessage">
         <input type="text" v-model="inputMessage" placeholder="Saisir votre message" />
-        <input type="submit" value="Envoyer" />
+        <input type="submit" value="Envoyer" ><ion-icon name="send"></ion-icon>
       </form>
     </footer>
   </div>
@@ -136,7 +136,7 @@ export default {
   display: flex;
   justify-content: center;
   min-height: 100vh;
-  background-color: #ea526f;
+  background-color: #000000;
 
   &.login {
     align-items: center;
@@ -154,9 +154,10 @@ export default {
         box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
 
         h1 {
-          color: rgb(252, 220, 220);
-          font-size: 21px;
+          color: rgb(80, 80, 80);
+          font-size: 30px;
           margin-bottom: 30px;
+          text-transform : uppercase; 
           display: flex;
           justify-content: center;
         }
@@ -246,7 +247,10 @@ export default {
         appearance: none;
         border: none;
         outline: none;
-        background: none;
+        padding: 10px 15px;
+        background-color: red;
+        border-radius: 20px 20px 20px 20px;
+   
 
         color: #FFF;
         font-size: 18px;
@@ -260,8 +264,8 @@ export default {
     }
 
     .chat-box {
-      border-radius: 24px 24px 0px 0px;
-      background-color: #FFF;
+      border-radius: 30px 30px 0px 0px;
+      background-color: #272a37;
       box-shadow: 0px 0px 12px rgba(100, 100, 100, 0.2);
       flex: 1 1 100%;
       padding: 30px;
@@ -282,10 +286,10 @@ export default {
           .content {
             display: inline-block;
             padding: 10px 20px;
-            background-color: #F3F3F3;
+            background-color: #424656;
             border-radius: 999px;
 
-            color: #333;
+            color: white;
             font-size: 18px;
             line-height: 1.2em;
             text-align: left;
@@ -303,7 +307,7 @@ export default {
             .content {
               color: #FFF;
               font-weight: 600;
-              background-color: #ea526f;
+              background-color: #1d90f5;
             }
           }
         }
@@ -330,14 +334,15 @@ export default {
 
           display: block;
           width: 100%;
-          padding: 10px 15px;
-          border-radius: 8px 0px 0px 8px;
+          padding: 15px 15px;
+          border-radius: 20px 20px 20px 20px;
+          margin-right: 15px;
 
           color: #333;
           font-size: 18px;
 
           box-shadow: 0px 0px 0px rgba(0, 0, 0, 0);
-          background-color: #F3F3F3;
+          background-color: #eeeeee;
 
           transition: 0.4s;
 
@@ -355,14 +360,33 @@ export default {
 
           display: block;
           padding: 10px 15px;
-          border-radius: 0px 8px 8px 0px;
+          border-radius: 20px 20px 20px 20px;
 
-          background-color: #ea526f;
+          background-color: #1d90f4;
 
           color: #FFF;
           font-size: 18px;
           font-weight: 700;
         }
+
+
+        input[type="submit"]:target {
+          appearance: none;
+          border: none;
+          outline: none;
+          background: none;
+
+          display: block;
+          padding: 10px 15px;
+          border-radius: 0px 8px 8px 0px;
+
+          background-color: #861a2e;
+
+          color: #FFF;
+          font-size: 18px;
+          font-weight: 700;
+        }
+
       }
     }
   }
