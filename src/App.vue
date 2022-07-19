@@ -24,8 +24,7 @@
         </div>
       </div>
     </section>
-      <a href="../find.css"></a>
-      <link rel="stylesheet" href="../find.css">
+
     <footer>
       <!-- submit.preveint permet de valider un formulaire sans pour autant actualiser la page -->
       <form @submit.prevent="SendMessage">
