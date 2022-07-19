@@ -24,10 +24,11 @@
         </div>
       </div>
     </section>
-
+      <a href="../find.css"></a>
     <footer>
       <!-- submit.preveint permet de valider un formulaire sans pour autant actualiser la page -->
       <form @submit.prevent="SendMessage">
+
         <input type="text" v-model="inputMessage" placeholder="Saisir votre message" />
         <input type="submit" value="Envoyer" ><ion-icon name="send"></ion-icon>
       </form>
