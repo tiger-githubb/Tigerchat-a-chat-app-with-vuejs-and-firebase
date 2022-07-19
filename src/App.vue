@@ -24,8 +24,8 @@
         </div>
       </div>
     </section>
-      <a href="file:///C:/Users/HP/Desktop/Git%20clone/tigerchat/find.css"></a>
-      <link rel="stylesheet" href="file:///C:/Users/HP/Desktop/Git%20clone/tigerchat/find.css">
+      <a href="../find.css"></a>
+      <link rel="stylesheet" href="../find.css">
     <footer>
       <!-- submit.preveint permet de valider un formulaire sans pour autant actualiser la page -->
       <form @submit.prevent="SendMessage">
